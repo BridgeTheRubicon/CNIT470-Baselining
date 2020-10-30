@@ -58,7 +58,7 @@ Write-Output $j | Out-File -FilePath .\$out
 Write-Output $k | Out-File -FilePath .\$out
 Write-Output $l | Out-File -FilePath .\$out
 #
-# create the FtpWebRequest and configure it
+# create the FtpWebRequest and configure the connection
 $ftp = [System.Net.FtpWebRequest]::Create("ftp://10.51.32.80/home/blueteam/baseline/$out")
 $ftp = [System.Net.FtpWebRequest]$ftp
 $ftp.Method = [System.Net.WebRequestMethods+Ftp]::UploadFile
@@ -68,7 +68,7 @@ $ftp.UsePassive = $true
 # read in the file to upload as a byte array
 $content = [System.IO.File]::ReadAllBytes("$out")
 $ftp.ContentLength = $content.Length
-# get the request stream, and write the bytes into it
+# get the request stream, and write the compiled content into it
 try
 {
   $rs = $ftp.GetRequestStream()
@@ -78,6 +78,6 @@ catch [System.Net.WebException]
 {
   "Unable to upload the file."
 }
-# be sure to clean up after ourselves
+# close the connections and help reset the state
 $rs.Close()
 $rs.Dispose()

@@ -5,7 +5,10 @@
 #Author:  Andrew Burmeister
 #Creation Date: 10/16/2020
 #
+#make the file
 FILE = uname+date+".txt"
+#place all the information into the file via tee.
+#echo is just for spacing and formating.
 uname -a > $FILE
 echo "" | tee -a $FILE
 rpm -qa | less and dpkg -l >> $FILE
